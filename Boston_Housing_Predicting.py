@@ -1,33 +1,47 @@
 import pandas as pd
+import numpy as np
 from sklearn.datasets import load_boston
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import r2_score
-from sklearn.svm import SVR
-import pickle
 #### 1.import boston dataset########################
-boston_dataset = load_boston()
-data = pd.DataFrame(data=boston_dataset.data, columns=boston_dataset.feature_names)
-data['MEDV'] = boston_dataset.target
-
+boston=load_boston()
+dataset=pd.DataFrame(boston.data,columns=boston.feature_names)
 #### 2. Prepare the dataset before model############
-X = data.drop('MEDV', axis=1).to_numpy()
-y = data['MEDV'].to_numpy()
+dataset['Price']=boston.target
+## Independent and Dependent features
+X = dataset.iloc[:,:-1]
+y = dataset.iloc[:,-1]
 
 ##### 3. Split the dataset into training and test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 42)
-scaler = MinMaxScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-##### 4. Choose the Model
-regressor = SVR(kernel='rbf', C=10)#, gamma=0.1)
-regressor.fit(X_train, y_train)
-
+##Train Test Split
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.3,random_state=42)
+#############################################
+## Standardize the dataset
+from sklearn.preprocessing import StandardScaler
+scaler=StandardScaler()
+X_train=scaler.fit_transform(X_train)
+X_test=scaler.transform(X_test)
+#############################################
+import pickle
+pickle.dump(scaler,open('scaling.pkl','wb'))
+############################################
+from sklearn.linear_model import LinearRegression
+regression=LinearRegression()
+regression.fit(X_train,y_train)
+reg_pred=regression.predict(X_test)
 ##### 5. Evaluate the model and make predictions
-y_pred = regressor.predict(X_test)
-print(F'The fit of trained data: {r2_score(y_true= y_test , y_pred= y_pred)}')
-######################
-### pickling the model file for deployment
-######################
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
 
+print(mean_absolute_error(y_test,reg_pred))
+print(mean_squared_error(y_test,reg_pred))
+print(np.sqrt(mean_squared_error(y_test,reg_pred)))
+
+from sklearn.metrics import r2_score
+score=r2_score(y_test,reg_pred)
+print(score)
+## Pickling The Model file For Deployment
+import pickle
+pickle.dump(regression,open('regmodel.pkl','wb'))
+pickled_model=pickle.load(open('regmodel.pkl','rb'))
+## Prediction
+print(pickled_model.predict(scaler.transform(boston.data[0].reshape(1,-1))))
