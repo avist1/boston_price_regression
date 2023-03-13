@@ -1,33 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
- 
-@avist1 
-krishnaik06
-/
-bostonhousepricing
-Public
-Fork your own copy of krishnaik06/bostonhousepricing
-Code
-Issues
-Pull requests
-1
-Actions
-Projects
-Security
-Insights
-bostonhousepricing/.github/workflows/main.yaml
-@krishnaik06
-krishnaik06 Docker and Github action changes commit
-Latest commit 6492b50 on Jul 25, 2022
- History
- 1 contributor
-59 lines (44 sloc)  1.95 KB
-
 # Your workflow name.
 name: Deploy to heroku.
 
@@ -87,18 +57,3 @@ jobs:
    
           
 ### ⬆ IMPORTANT PART ⬆ ###
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-bostonhousepricing/main.yaml at main · krishnaik06/bostonhousepricing
