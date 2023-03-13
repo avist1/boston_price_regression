@@ -1,4 +1,3 @@
-# Your workflow name.
 name: My Workflow Name
 
 # Run workflow on every push to main branch.
